@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.pyc
+dane/
+.pytest_cache/
+.venv-stare/
+.check-install/

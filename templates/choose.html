@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wybierz wersję · Bezpieczne przesyłanie plików</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<main class="selection">
+  <header class="selection-heading">
+    <span class="eyebrow">LOKALNE LABORATORIUM</span>
+    <h1>Bezpieczne przesyłanie plików</h1>
+  </header>
+  <nav class="version-grid" aria-label="Wybór wersji aplikacji">
+    <a class="version-card before" href="/before/">
+      <span class="card-top"><span class="pill">Wersja podatna</span><span class="version-number" aria-hidden="true">01</span></span>
+      <h2>BEFORE</h2>
+      <p>Sprawdź, co się dzieje, gdy aplikacja ufa przesyłanym plikom.</p>
+      <span class="card-action">Otwórz BEFORE <span aria-hidden="true">↗</span></span>
+    </a>
+    <a class="version-card after" href="/after/">
+      <span class="card-top"><span class="pill">Wersja zabezpieczona</span><span class="version-number" aria-hidden="true">02</span></span>
+      <h2>AFTER</h2>
+      <p>Prześlij ten sam plik i sprawdź działanie wprowadzonych zabezpieczeń.</p>
+      <span class="card-action">Otwórz AFTER <span aria-hidden="true">↗</span></span>
+    </a>
+  </nav>
+</main>
+</body>
+</html>

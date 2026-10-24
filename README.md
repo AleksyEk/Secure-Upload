@@ -1,160 +1,225 @@
 # Bezpieczne przesyłanie plików — BEFORE / AFTER
 
-Lokalna aplikacja do projektu P6 z Bezpieczeństwa Aplikacji Internetowych.
-Pozwala porównać podatne i zabezpieczone przesyłanie oraz pobieranie plików.
-Jeden serwer obsługuje ekran wyboru i dwa niezależne magazyny danych.
+Projekt P6 z przedmiotu **Bezpieczeństwo Aplikacji Internetowych**.
+Lokalna aplikacja internetowa umożliwia porównanie podatnego i zabezpieczonego
+mechanizmu przesyłania oraz pobierania plików. Obie wersje działają w jednym
+procesie serwera, pod oddzielnymi adresami i z niezależnymi magazynami danych.
 
-## Pobranie z GitHuba i pierwsze uruchomienie na Windowsie
+## Wymagania
 
-1. Zainstaluj **Python 3.12 lub nowszy** z https://www.python.org/downloads/windows/.
-   Podczas instalacji zaznacz **Add python.exe to PATH**, jeśli ta opcja jest dostępna.
-   Projekt zweryfikowano na Pythonie 3.12.
-2. W repozytorium wybierz **Code → Download ZIP** albo sklonuj repozytorium.
-3. **Rozpakuj cały ZIP** do własnego folderu, np. Dokumenty\STUDIA_BAI.
-   Nie uruchamiaj aplikacji bezpośrednio z podglądu archiwum ZIP.
-4. Kliknij dwukrotnie **Uruchom aplikacje.bat**.
-5. Przy pierwszym starcie poczekaj na utworzenie `.venv` i instalację bibliotek.
-   Wymagane są internet oraz możliwość zapisu w folderze projektu.
-6. Przeglądarka otworzy ekran wyboru BEFORE / AFTER.
+- System Windows — dla uruchamiania dwuklikiem przez plik BAT.
+- Python **3.12 lub nowszy**. Instalację i działanie zweryfikowano na Pythonie 3.12.
+- Przeglądarka internetowa.
+- Dostęp do internetu podczas pierwszej instalacji bibliotek lub zmiany ich wersji.
+- Uprawnienia do zapisu w rozpakowanym katalogu projektu.
+- Wolny port lokalny **5000**.
 
-Nie trzeba osobno instalować Flask, Pillow ani SQLite. Wymagane biblioteki
-są instalowane automatycznie z `requirements.txt`. Nie instalujemy Pythona
-bez wiedzy użytkownika: jeśli go brakuje, okno pokaże instrukcję.
+Nie jest wymagany Docker ani osobny serwer bazy danych. SQLite jest obsługiwany
+przez standardową bibliotekę Pythona. Flask, Pillow i pozostałe zależności są
+instalowane automatycznie na podstawie `requirements.txt`.
 
-Kolejne uruchomienia wykonujesz tym samym dwuklikiem. Jeśli wersje bibliotek są
-zgodne z `requirements.txt`, instalacja jest pomijana i internet nie jest potrzebny.
-Po aktualizacji wymagań launcher ponownie zainstaluje wskazane wersje.
-Możesz utworzyć skrót do pliku BAT na pulpicie.
+## Pobranie i instalacja
 
-## Zatrzymanie i kontrola serwera
+1. Należy zainstalować Pythona ze [strony oficjalnej](https://www.python.org/downloads/windows/).
+   Jeżeli instalator udostępnia opcję **Add python.exe to PATH**, należy ją zaznaczyć.
+   Plik uruchamiający rozpoznaje polecenie `py` lub `python`.
+2. Na stronie repozytorium GitHub należy wybrać **Code → Download ZIP**.
+   Alternatywnie można sklonować repozytorium za pomocą Git.
+3. Archiwum należy w całości rozpakować do katalogu z prawem zapisu.
+   Uruchamianie bezpośrednio z podglądu archiwum ZIP nie jest obsługiwane.
+4. W rozpakowanym katalogu, obok `app.py` i `requirements.txt`, należy uruchomić
+   dwuklikiem plik **`Uruchom aplikacje.bat`**.
+5. Przy pierwszym uruchomieniu automatycznie następuje:
+   - wykrycie dostępnego interpretera Pythona;
+   - utworzenie lokalnego środowiska wirtualnego `.venv`;
+   - instalacja wymaganych wersji bibliotek;
+   - uruchomienie serwera;
+   - otwarcie ekranu wyboru BEFORE / AFTER w domyślnej przeglądarce.
 
-**Okno terminala pozostaje widoczne przez cały czas działania aplikacji.**
-Naciśnij **Ctrl+C** w tym oknie, aby zatrzymać serwer. Jeżeli Windows zapyta
-o zakończenie zadania wsadowego, potwierdź. Samo zamknięcie karty przeglądarki
-nie zatrzymuje serwera. Po zatrzymaniu możesz zamknąć okno terminala.
-Launcher nie instaluje usługi i nie dodaje aplikacji do autostartu.
+Jeżeli Python nie zostanie wykryty, w oknie zostanie wyświetlona instrukcja
+instalacji. Python nie jest instalowany automatycznie przez aplikację.
 
-Adresy:
+## Kolejne uruchomienia
 
-- wybór wersji: http://127.0.0.1:5000/
-- BEFORE: http://127.0.0.1:5000/before/
-- AFTER: http://127.0.0.1:5000/after/
+Aplikację należy uruchamiać tym samym plikiem **`Uruchom aplikacje.bat`**.
+Jeżeli zainstalowane biblioteki odpowiadają `requirements.txt`, ich instalacja
+jest pomijana i dostęp do internetu nie jest wymagany. Po zmianie wymagań
+skrypt instaluje wskazane wersje zależności.
 
-Serwer nasłuchuje wyłącznie na `127.0.0.1`, czyli na tym komputerze.
-Jeśli port 5000 jest zajęty, okno pokaże błąd. Zatrzymaj poprzednią instancję.
-Po zmianach w kodzie uruchom aplikację ponownie; w razie potrzeby odśwież stronę Ctrl+F5.
+Dostępne adresy:
 
-## Funkcjonalność
+| Widok | Adres |
+| --- | --- |
+| Wybór wersji | [http://127.0.0.1:5000/](http://127.0.0.1:5000/) |
+| BEFORE — wersja podatna | [http://127.0.0.1:5000/before/](http://127.0.0.1:5000/before/) |
+| AFTER — wersja zabezpieczona | [http://127.0.0.1:5000/after/](http://127.0.0.1:5000/after/) |
 
-1. Wybierz BEFORE albo AFTER.
-2. Wybierz plik i kliknij „Prześlij plik”.
-3. Odczytaj komunikat i sprawdź wpis w magazynie.
-4. Kliknij „Pobierz”, aby pobrać plik jako załącznik.
-5. Przycisk „Usuń” usuwa plik i jego wpis z magazynu. Działa również, gdy plik
-   wcześniej skasowano ręcznie z folderu. Usunięcie jest trwałe.
-6. Link „Wybór wersji” przenosi na ekran główny.
+Serwer nasłuchuje wyłącznie na `127.0.0.1`, czyli na komputerze, na którym
+został uruchomiony. W przypadku braku automatycznego otwarcia przeglądarki
+należy otworzyć pierwszy adres ręcznie.
 
-Obie wersje możesz otworzyć jednocześnie w różnych kartach. Dane i walidacja
-nie mieszają się między wersjami. Pliki pozostają po ponownym uruchomieniu.
+## Zatrzymanie aplikacji
 
-### AFTER — zastosowane zabezpieczenia
+Okno terminala pozostaje widoczne przez cały czas działania serwera.
+Zatrzymanie następuje po naciśnięciu **Ctrl+C** w tym oknie. Jeżeli system
+wyświetli pytanie o zakończenie zadania wsadowego, należy je potwierdzić.
+
+**Zamknięcie karty przeglądarki nie zatrzymuje serwera.** Skrypt nie instaluje
+usługi systemowej i nie dodaje aplikacji do autostartu. Przesłane pliki i wpisy
+bazy danych pozostają zapisane po zatrzymaniu oraz ponownym uruchomieniu.
+
+Po zmianie kodu wymagane jest ponowne uruchomienie serwera. W celu odświeżenia
+stylów i skryptów w przeglądarce można użyć **Ctrl+F5**.
+
+## Obsługa i funkcjonalność
+
+- Ekran główny umożliwia wybór wersji BEFORE lub AFTER.
+- Formularz „Prześlij plik” obsługuje przesyłanie pojedynczego pliku.
+- „Magazyn plików” prezentuje nazwę oryginalną, nazwę magazynową i rozmiar w MB.
+- „Pobierz” udostępnia plik jako załącznik.
+- „Usuń” trwale usuwa wpis i plik z magazynu. Wpis można usunąć także po
+  wcześniejszym ręcznym skasowaniu pliku. W BEFORE współdzielony plik o tej samej
+  nazwie pozostaje do usunięcia ostatniego odwołującego się do niego wpisu.
+- Link „Wybór wersji” prowadzi do ekranu głównego.
+- Komunikaty powodzenia i błędów pojawiają się u góry, na środku ekranu.
+  Znikają po 5 sekundach; najechanie myszką lub ustawienie fokusu w komunikacie
+  wstrzymuje odliczanie. Przycisk „×” umożliwia wcześniejsze zamknięcie.
+
+Obie wersje mogą być otwarte jednocześnie w osobnych kartach. Wybór jest związany
+z adresem, a nie globalnym przełącznikiem. Dane obu wersji pozostają niezależne.
+
+### AFTER — mechanizmy ochrony
 
 | Mechanizm | Zasada |
 | --- | --- |
-| Lista rozszerzeń | `.png`, `.jpg`, `.jpeg` |
+| Dozwolone rozszerzenia | `.png`, `.jpg`, `.jpeg` |
 | Deklarowany MIME | `image/png` lub `image/jpeg`, zgodnie z rozszerzeniem |
-| Zawartość | Pillow rozpoznaje format, sprawdza strukturę i odczytuje obraz |
-| Rozmiar | 5 MiB na plik, 6 MiB na całe żądanie |
-| Liczba | Jeden plik w operacji, maksymalnie 20 zapisanych plików |
-| Wymiary | Maksymalnie 20 milionów pikseli |
-| Nazwa | Losowy identyfikator i rozszerzenie nadawane przez serwer |
-| Przechowywanie | Poza publicznym katalogiem `static` |
+| Rzeczywista zawartość | Rozpoznanie formatu, sprawdzenie struktury i odczyt obrazu przez Pillow |
+| Rozmiar pojedynczego pliku | Maksymalnie 5 MiB, czyli 5 242 880 bajtów — około 5,24 MB |
+| Rozmiar całego żądania | Maksymalnie 6 MiB, czyli około 6,29 MB |
+| Liczba plików | Jeden plik na operację i maksymalnie 20 zapisanych plików |
+| Wymiary obrazu | Maksymalnie 20 milionów pikseli |
+| Nazwa magazynowa | Losowy identyfikator i rozszerzenie nadawane przez serwer |
+| Zapis | Poza publicznym katalogiem `static` |
 | Pobieranie | Po identyfikatorze z bazy, z kontrolą katalogu docelowego |
 
-Nazwa zawierająca ścieżkę jest odrzucana. Nazwy takie jak `obraz.jpg.jpg` nie są
-same w sobie błędem: sprawdzane jest ostatnie rozszerzenie i faktyczna zawartość.
-Plik WEBP nazwany `.png` zostanie odrzucony. Zmiana rozszerzenia nie konwertuje obrazu.
+W tabeli interfejsu obowiązuje przelicznik **1 MB = 1 000 000 bajtów**;
+limity w kodzie wykorzystują **1 MiB = 1 048 576 bajtów**. Komunikat błędu podaje
+maksymalny rozmiar w MB, zaokrąglony do dwóch miejsc po przecinku.
 
-### BEFORE — wersja podatna
+Nazwy zawierające ścieżkę są odrzucane. Nazwa `obraz.jpg.jpg` sama w sobie nie
+powoduje odrzucenia: sprawdzane są końcowe rozszerzenie i zawartość. Plik WEBP
+nazwany `.png` zostanie odrzucony. Zmiana rozszerzenia nie konwertuje formatu.
 
-Celowo pomija walidację formatu, limit pojedynczego pliku i limit liczby.
-Ufa nazwie i deklaracji MIME klienta. Techniczny limit żądania wynosi 16 MiB.
-Manipulacja ścieżką jest ograniczona do własnego katalogu `dane/before`, a baza
-jest chroniona przed nadpisaniem w ramach demonstracji. `control.txt` poza
-magazynem uploadu jest bezpiecznym celem testu path traversal.
+### BEFORE — mechanizm podatny
 
-Wyłącznie własne lokalne laboratorium i bezpieczne pliki testowe. Bez wykonywania
-złośliwego kodu, kont użytkowników, antywirusa i kwarantanny. Walidacja obrazu
-nie jest skanowaniem malware; zachowuje oryginalne bajty i metadane.
+Wersja BEFORE celowo pomija walidację formatu, limit rozmiaru pojedynczego pliku
+oraz limit liczby zapisanych plików. Wykorzystuje nazwę i deklarację MIME klienta.
+Techniczny limit całego żądania wynosi 16 MiB.
 
-## Pliki projektu
+Manipulacja ścieżką w ramach demonstracji jest ograniczona do własnego katalogu
+`dane/before`. Baza jest chroniona przed nadpisaniem. Plik `control.txt`, znajdujący
+się poza katalogiem `uploads`, stanowi bezpieczny cel testu path traversal.
+Funkcja usuwania nie pozwala kasować plików poza magazynem `uploads`.
+
+## Zakres i ograniczenia
+
+Aplikacja jest przeznaczona wyłącznie do autoryzowanego, lokalnego laboratorium.
+Do demonstracji wystarczają bezpieczne pliki testowe i dowody działania ochrony.
+Wykonywanie rzeczywistego złośliwego kodu nie jest wymagane.
+
+Poza zakresem pozostają konta użytkowników, uprawnienia między użytkownikami,
+skanowanie antywirusowe oraz kwarantanna. Walidacja obrazu nie zastępuje skanowania
+malware; oryginalne bajty, metadane i ewentualne dodatkowe dane są zachowywane.
+Testy funkcjonalne nie stanowią potwierdzenia odporności na wszystkie ataki.
+
+## Struktura projektu i przechowywanie danych
 
 ```text
-Uruchom aplikacje.bat     start dwuklikiem na Windowsie
-uruchom.py               tworzenie środowiska, instalacja bibliotek, start aplikacji
-app.py                   cała logika BEFORE / AFTER i serwer
+Uruchom aplikacje.bat     uruchamianie dwuklikiem w systemie Windows
+uruchom.py               przygotowanie środowiska i uruchomienie serwera
+app.py                   logika BEFORE / AFTER i serwer
 templates/
   choose.html            ekran wyboru wersji
   index.html             formularz i magazyn
-static/style.css         wygląd
-requirements.txt         wersje bibliotek
-README.md                ta instrukcja
+static/
+  style.css              wygląd aplikacji
+  notifications.js       automatyczne zamykanie komunikatów i odliczanie
+requirements.txt         wymagane wersje bibliotek
+README.md                instrukcja instalacji i obsługi
 tests/                   testy automatyczne
-testy-reczne/            pliki do prób przez formularz
-dane/                    tworzone automatycznie, nie trafia do GitHuba
+testy-reczne/            przykładowe pliki do testów przez formularz
+dane/                    dane lokalne, tworzone automatycznie
   after/
     uploads/             zaakceptowane pliki AFTER
     files.sqlite3        metadane AFTER
     control.txt          plik kontrolny
-  before/                analogiczny, oddzielny magazyn BEFORE
-.venv/                   tworzone lokalnie, nie trafia do GitHuba
+  before/                analogiczny, niezależny magazyn BEFORE
+.venv/                   lokalne środowisko Pythona, tworzone automatycznie
 ```
 
-`__pycache__` tworzy Python automatycznie. Nie trzeba go przesyłać.
-Do repozytorium dodaj kod, szablony, style, launcher, wymagania, instrukcję i testy.
-Pliki testowe dołączaj wyłącznie, jeśli są bezpieczne i przeznaczone do udostępnienia.
-Nie dołączaj `.venv`, `dane` ani własnych prywatnych plików.
-Odbiorca otrzymuje pusty magazyn, który aplikacja utworzy przy pierwszym starcie.
+Foldery `dane`, `.venv` i `__pycache__` nie są przeznaczone do publikacji.
+Nowa kopia pobrana z repozytorium tworzy własne środowisko i puste magazyny.
+Kod i zależności są dostarczane jako źródła; projekt nie jest samodzielnym
+plikiem EXE zawierającym interpreter Pythona.
 
-## Ręczne uruchomienie i testy
+Ręczne usunięcie obrazu z `uploads` nie usuwa wpisu z bazy `files.sqlite3`.
+Do usuwania obu elementów służy przycisk „Usuń” w interfejsie.
 
-W terminalu, z folderu projektu:
+## Uruchomienie z terminala
+
+Poniższe polecenia należy wykonywać w głównym katalogu projektu.
+
+Przygotowanie zależności i uruchomienie aplikacji z otwarciem przeglądarki:
 
 ```powershell
 python uruchom.py
 ```
 
-Przygotowanie samych zależności, bez serwera i przeglądarki:
+Jeżeli instalacja Pythona udostępnia polecenie `py`, odpowiednikiem jest
+`py -3 uruchom.py`.
+
+Przygotowanie wyłącznie środowiska, bez uruchamiania serwera i przeglądarki:
 
 ```powershell
 python uruchom.py --prepare-only
 ```
 
-Jeśli środowisko już istnieje, można nadal uruchamiać aplikację bezpośrednio:
+Bezpośrednie uruchomienie po przygotowaniu środowiska:
 
 ```powershell
 .\.venv\Scripts\python.exe app.py
 ```
 
-Opcja `--open-browser` otwiera przeglądarkę, a `--port 5001` pozwala zmienić port.
+Bezpośrednie uruchomienie z otwarciem przeglądarki i innym portem:
 
-Testy automatyczne:
+```powershell
+.\.venv\Scripts\python.exe app.py --open-browser --port 5001
+```
+
+W ostatnim przypadku ekran główny jest dostępny pod adresem
+[http://127.0.0.1:5001/](http://127.0.0.1:5001/).
+
+## Testy automatyczne
+
+Po przygotowaniu środowiska testy można uruchomić poleceniem:
 
 ```powershell
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
 ```
 
-Używają oddzielnych katalogów tymczasowych i nie zmieniają ręcznie przesłanych
-plików. Pełne scenariusze bezpieczeństwa i dowody do raportu stanowią osobny etap.
+Testy korzystają z oddzielnych katalogów tymczasowych. Nie uruchamiają serwera
+HTTP ani przeglądarki i nie zmieniają ręcznie przesłanych plików. Obejmują m.in.
+przesyłanie i pobieranie, trwałość danych, nawigację, rozdzielenie magazynów,
+różnicę walidacji między wersjami oraz usuwanie plików i pozostałych wpisów.
 
-## Typowe problemy
+## Rozwiązywanie problemów
 
-- **Brak Pythona:** zainstaluj Python 3.12+ i uruchom ponownie plik BAT.
-- **Błąd pobierania bibliotek:** sprawdź internet; pełny komunikat pozostaje w oknie.
-- **Przeniesione lub uszkodzone `.venv`:** zatrzymaj aplikację, zmień nazwę tego
-  folderu na `.venv-stare` i uruchom BAT ponownie. Dane w `dane` pozostaną zachowane.
-- **Zajęty port 5000:** zatrzymaj wcześniejszy serwer. Launcher nie wyłącza cudzych procesów.
-- **Przeglądarka się nie otworzyła:** wpisz ręcznie http://127.0.0.1:5000/.
-
-Założeniem dystrybucji jest pobranie źródeł i automatyczne przygotowanie środowiska.
-To nie jest samodzielny plik EXE zawierający Pythona.
+| Problem | Postępowanie |
+| --- | --- |
+| Brak interpretera Pythona | Należy zainstalować Python 3.12+ i ponownie uruchomić plik BAT. |
+| Błąd instalacji bibliotek | Należy sprawdzić połączenie z internetem oraz komunikat w terminalu. |
+| Uszkodzone lub przeniesione `.venv` | Po zatrzymaniu aplikacji należy zmienić nazwę folderu na `.venv-stare` i ponownie uruchomić BAT. Magazyny w `dane` pozostają zachowane. |
+| Zajęty port 5000 | Należy zatrzymać poprzedni serwer albo wybrać inny port przy bezpośrednim uruchomieniu. Skrypt nie zatrzymuje innych procesów. |
+| Brak automatycznego otwarcia przeglądarki | Należy ręcznie otworzyć adres wyświetlony w terminalu. |
+| Nieaktualny wygląd strony | Należy odświeżyć stronę przez Ctrl+F5; po zmianie kodu należy też ponownie uruchomić serwer. |

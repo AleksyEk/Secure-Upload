@@ -122,50 +122,6 @@ Manipulacja ścieżką w ramach demonstracji jest ograniczona do własnego katal
 się poza katalogiem `uploads`, stanowi bezpieczny cel testu path traversal.
 Funkcja usuwania nie pozwala kasować plików poza magazynem `uploads`.
 
-## Zakres i ograniczenia
-
-Aplikacja jest przeznaczona wyłącznie do autoryzowanego, lokalnego laboratorium.
-Do demonstracji wystarczają bezpieczne pliki testowe i dowody działania ochrony.
-Wykonywanie rzeczywistego złośliwego kodu nie jest wymagane.
-
-Poza zakresem pozostają konta użytkowników, uprawnienia między użytkownikami,
-skanowanie antywirusowe oraz kwarantanna. Walidacja obrazu nie zastępuje skanowania
-malware; oryginalne bajty, metadane i ewentualne dodatkowe dane są zachowywane.
-Testy funkcjonalne nie stanowią potwierdzenia odporności na wszystkie ataki.
-
-## Struktura projektu i przechowywanie danych
-
-```text
-Uruchom aplikacje.bat     uruchamianie dwuklikiem w systemie Windows
-uruchom.py               przygotowanie środowiska i uruchomienie serwera
-app.py                   logika BEFORE / AFTER i serwer
-templates/
-  choose.html            ekran wyboru wersji
-  index.html             formularz i magazyn
-static/
-  style.css              wygląd aplikacji
-  notifications.js       automatyczne zamykanie komunikatów i odliczanie
-requirements.txt         wymagane wersje bibliotek
-README.md                instrukcja instalacji i obsługi
-tests/                   testy automatyczne
-testy-reczne/            przykładowe pliki do testów przez formularz
-dane/                    dane lokalne, tworzone automatycznie
-  after/
-    uploads/             zaakceptowane pliki AFTER
-    files.sqlite3        metadane AFTER
-    control.txt          plik kontrolny
-  before/                analogiczny, niezależny magazyn BEFORE
-.venv/                   lokalne środowisko Pythona, tworzone automatycznie
-```
-
-Foldery `dane`, `.venv` i `__pycache__` nie są przeznaczone do publikacji.
-Nowa kopia pobrana z repozytorium tworzy własne środowisko i puste magazyny.
-Kod i zależności są dostarczane jako źródła; projekt nie jest samodzielnym
-plikiem EXE zawierającym interpreter Pythona.
-
-Ręczne usunięcie obrazu z `uploads` nie usuwa wpisu z bazy `files.sqlite3`.
-Do usuwania obu elementów służy przycisk „Usuń” w interfejsie.
-
 ## Uruchomienie z terminala
 
 Poniższe polecenia należy wykonywać w głównym katalogu projektu.
@@ -199,19 +155,6 @@ Bezpośrednie uruchomienie z otwarciem przeglądarki i innym portem:
 
 W ostatnim przypadku ekran główny jest dostępny pod adresem
 [http://127.0.0.1:5001/](http://127.0.0.1:5001/).
-
-## Testy automatyczne
-
-Po przygotowaniu środowiska testy można uruchomić poleceniem:
-
-```powershell
-.\.venv\Scripts\python.exe -m unittest discover -s tests -v
-```
-
-Testy korzystają z oddzielnych katalogów tymczasowych. Nie uruchamiają serwera
-HTTP ani przeglądarki i nie zmieniają ręcznie przesłanych plików. Obejmują m.in.
-przesyłanie i pobieranie, trwałość danych, nawigację, rozdzielenie magazynów,
-różnicę walidacji między wersjami oraz usuwanie plików i pozostałych wpisów.
 
 ## Rozwiązywanie problemów
 
